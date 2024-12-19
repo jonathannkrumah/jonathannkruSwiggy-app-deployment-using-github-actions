@@ -34,7 +34,7 @@ jobs:
           cd /home/ubuntu/actions-runner/deployment-using-github-actions
           docker build -t swiggy-clone .
           docker tag swiggy-clone dockeradmin419/swiggy-app:latest
-          docker login -u ${{ secrets.Dockerhub_username }} -p ${{ secrets.Dockerhub_token }}
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push dockeradmin419/swiggy-app:latest
         env:
           DOCKER_CLI_ACI: 1
