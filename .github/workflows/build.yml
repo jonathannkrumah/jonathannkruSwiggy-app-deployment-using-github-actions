@@ -25,6 +25,7 @@ jobs:
         run: |
           node -v
           npm -v
+          cd /home/ubuntu/actions-runner/deployment-using-github-actions
           sudo npm install
         shell: bash
 
