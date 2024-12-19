@@ -33,6 +33,5 @@ jobs:
         
       - name: Deploy to kubernetes
         run: 
-          cd /home/ubuntu/actions-runner/deployment-using-github-actions
-          kubectl apply -f deployment-service.yml
+          cd /home/ubuntu/actions-runner/deployment-using-github-actions && kubectl apply -f deployment-service.yml
         
