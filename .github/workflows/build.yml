@@ -31,7 +31,8 @@ jobs:
 
       - name: Docker Build and Push
         run: |
-          docker build -t swiggy-clone ./home/ubuntu/actions-runner/deployment-using-github-actions
+          cd /home/ubuntu/actions-runner/deployment-using-github-actions
+          docker build -t swiggy-clone .
           docker tag swiggy-clone dockeradmin419/swiggy-app:latest
           docker login -u ${{ secrets.Dockerhub_username }} -p ${{ secrets.Dockerhub_token }}
           docker push dockeradmin419/swiggy-app:latest
