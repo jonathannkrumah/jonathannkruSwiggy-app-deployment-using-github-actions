@@ -9,6 +9,9 @@ jobs:
   deploy:
    runs-on: [self-hosted]
    steps:
+      - name: Docker login
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
       - name: Pull Docker Image
         run: |
           echo "Pulling Docker image..."
