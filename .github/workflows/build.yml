@@ -15,7 +15,7 @@ jobs:
       - name: Pull Docker Image
         run: |
           echo "Pulling Docker image..."
-          docker pull dockerhubadmin419/swiggy-app:latest
+          sudo docker pull dockerhubadmin419/swiggy-app:latest
 
       - name: Image Security Scan
         run: |
@@ -27,6 +27,6 @@ jobs:
       - name: Deploy Docker Container
         run: |
           echo "Deploying Docker container..."
-          docker stop swiggy-clone || true
-          docker rm swiggy-clone || true
-          docker run -d --name swiggy-app -p 3000:3000 dockerhubadmin419/swiggy-app:latest
+          sudo docker stop swiggy-clone || true
+          sudo docker rm swiggy-clone || true
+          sudo docker run -d --name swiggy-app -p 3000:3000 dockerhubadmin419/swiggy-app:latest
