@@ -6,35 +6,24 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
-    runs-on: [self-hosted]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-      - name: Install Node.js and Dependencies
+  deploy:
+   runs-on: [self-hosted]
+   steps:
+      - name: Pull Docker Image
         run: |
-          node -v
-          npm -v
-          cd /home/ubuntu/actions-runner/deployment-using-github-actions
-          sudo npm install
-        shell: bash
+          echo "Pulling Docker image..."
+          docker pull dockerhubadmin419/swiggy-app:latest
 
-      - name: Docker Build and Push
+      - name: Image Security Scan
         run: |
-          cd /home/ubuntu/actions-runner/deployment-using-github-actions
-          docker build -t swiggy-clone .
-          docker tag swiggy-clone dockeradmin419/swiggy-app:latest
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push dockeradmin419/swiggy-app:latest
+          echo "Scanning Docker image for vulnerabilities..."
+          trivy image dockerhubadmin419/swiggy-app:latest > trivyimagedeploy.txt
         env:
-          DOCKER_CLI_ACI: 1
+          TRIVY_SEVERITY: CRITICAL,HIGH
+
+      - name: Deploy Docker Container
+        run: |
+          echo "Deploying Docker container..."
+          docker stop swiggy-clone || true
+          docker rm swiggy-clone || true
+          docker run -d --name swiggy-app -p 3000:3000 dockerhubadmin419/swiggy-app:latest
